@@ -31,7 +31,7 @@ fun prepareChart(name: String, distrib: Distribution): CategoryChart {
     val start = 0.0
     val length = 10.0
 
-    val numberArray = DoubleArray(1000_000) { (distrib.getNextNumber()) }
+    val numberArray = DoubleArray(1_000_000) { (distrib.getNextNumber()) }
         .filter { it in start..length }
 
     val columns = 60

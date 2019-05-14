@@ -3,9 +3,9 @@ package distribution
 import kotlin.random.Random
 
 class UniformDistribution(
-    val from: Double, val to: Double
+    val from: Double, val to: Double, seed: Int = 0
 ): Distribution {
-    val rand = Random(0)
+    val rand = Random(seed)
 
     override fun getNextNumber() = rand.nextDouble(from, to)
 
