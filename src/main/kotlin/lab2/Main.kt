@@ -12,14 +12,14 @@ fun main() {
         { value: Double, step: Double -> ((value / step).toInt() * step).round(2) }
 
     val charts = mapOf(
-        "Трапецидальное распределение" to TrapezialDistribution(2.0, 8.0, 0.0),
+        "Трапецидальное распределение" to TrapezialDistribution(6.0, 14.0, 0.0),
         "Треугольное распределение" to TriangleDistribution(0.0, 20.0)
     ).map { entry ->
-        val columns = 20
+        val columns = 40
         val start = entry.value.start
         val step = entry.value.length / columns
 
-        val numberArray = DoubleArray(10_000) { entry.value.getNextNumber() }
+        val numberArray = DoubleArray(1_000_000) { entry.value.getNextNumber() }
 
         val valMap = sortedMapOf<Double, Int>().apply {
             (0 until columns).forEach {

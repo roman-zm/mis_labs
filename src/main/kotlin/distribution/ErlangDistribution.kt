@@ -4,17 +4,13 @@ class ErlangDistribution(
     override val a: Int,
     override val b: Double
 ) : IErlangDistribution {
-
-    val lambda = 1 / b
-
-    val exponentialDistributions = Array(a) {
-        ExponentialDistribution(lambda, LinearCongruenceUniformDistribution(seed = it * 123))
-    }
-
     override fun getNextNumber()
             = exponentialDistributions.map { it.getNextNumber() }.sum()
 
+    private val lambda = 1 / b
 
-    override val length = 1.0
+    private val exponentialDistributions = Array(a) {
+        ExponentialDistribution(lambda, UniformDistribution(seed = it * 123))
+    }
 
 }

@@ -1,5 +1,6 @@
 package distribution
 
-interface SimpsonDistribution: Distribution {
+interface ISimpsonDistribution: Distribution {
     val start: Double
+    val length: Double
 }

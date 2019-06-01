@@ -3,9 +3,9 @@ package lab1
 import distribution.LinearCongruenceUniformDistribution
 import distribution.SimpleCongruencesUniformDistribution
 import distribution.UniformDistribution
-import org.knowm.xchart.CategoryChart
-import org.knowm.xchart.CategoryChartBuilder
-import org.knowm.xchart.SwingWrapper
+import org.knowm.xchart.*
+import org.knowm.xchart.internal.chartpart.Chart
+import org.knowm.xchart.style.markers.SeriesMarkers
 
 
 fun main() {
@@ -13,9 +13,9 @@ fun main() {
     val columns = 20
 
     val distributions = mapOf(
-        "Встроенный рандом" to UniformDistribution(0.0, 1.0),
-        "Простые конгруэнции" to SimpleCongruencesUniformDistribution(0.0, 1.0),
-        "Линейная конгруэнтная последовательность" to LinearCongruenceUniformDistribution(0.0, 1.0)
+//        "Встроенный генератор" to UniformDistribution(0.0, 1.0),
+        "Простые конгруэнции" to SimpleCongruencesUniformDistribution(0.0, 1.0)
+//        "Линейная конгруэнтная последовательность" to LinearCongruenceUniformDistribution(0.0, 1.0)
     )
 
     val getHistoPoint =
@@ -27,7 +27,7 @@ fun main() {
 
         val step = distribution.length / columns
 
-        val numberList = Array(100) { distribution.getNextNumber() }
+        val numberList = Array(1_000_000) { distribution.getNextNumber() }
 
         val valMap = sortedMapOf<Double, Int>().apply {
             (0 until columns).forEach {
@@ -40,16 +40,23 @@ fun main() {
         getDistChart(valMap, name)
     }
 
-    SwingWrapper(charts).displayChartMatrix()
+//    SwingWrapper(charts).displayChartMatrix()
+    charts.forEach {
+        SwingWrapper(it).displayChart()
+    }
 
 }
 
-fun getDistChart(valMap: MutableMap<Double, Int>, name: String): CategoryChart {
-    val chart = CategoryChartBuilder().title(name).build()
+fun getDistChart(valMap: MutableMap<Double, Int>, name: String): XYChart {
+    val chart = XYChartBuilder().title(name).build()
     chart.styler.setHasAnnotations(false)
 
-    chart.addSeries("Плотность распределения", valMap.keys.toDoubleArray(),
+    val series = chart.addSeries("Плотность распределения", valMap.keys.toDoubleArray(),
         valMap.values.map { it.toDouble() }.toDoubleArray())
+
+    series.marker = SeriesMarkers.NONE
+    chart.styler.defaultSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.StepArea
+//    chart.styler.isXAxisLogarithmic = true
 
     return chart
 }

@@ -1,25 +1,23 @@
 package distribution
 
 class SimpleCongruencesUniformDistribution(
-    private val from: Double,
-    private val to: Double,
-    seed: Int = 1250
-): Distribution {
-
-    private var prevValue = seed
-
-    private val a = 3883
-    private val p = (2 pow Int.SIZE_BITS / 2 - 2).toInt()
-
-    override fun getNextNumber() = ((a * prevValue % p).apply {
+    override val from: Double,
+    override val to: Double,
+    seed: Int = 1250,
+    val a: Int = 3883,
+    val p: Int = 2 pow Int.SIZE_BITS
+): IUniformDistribution {
+    override fun getNextNumber() = (a * prevValue % p).apply {
         prevValue = this
-    } / p.toDouble()).let { d -> d * length + from }
+    }.toDouble() / p * length + from
 
     override val length = to - from
+
+    private var prevValue: Long = seed.toLong()
 }
 
 private infix fun Number.pow(i: Double) = Math.pow(this.toDouble(), i)
-infix fun Number.pow(i: Int) = Math.pow(this.toDouble(), i.toDouble())
+infix fun Number.pow(i: Int) = Math.pow(this.toDouble(), i.toDouble()).toInt()
 
 fun main() {
     val d = SimpleCongruencesUniformDistribution(0.0, 1.0)

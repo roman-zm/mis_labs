@@ -3,12 +3,13 @@ package distribution
 import kotlin.random.Random
 
 class UniformDistribution(
-    val from: Double, val to: Double, seed: Int = 0
-): Distribution {
-    val rand = Random(seed)
-
+    override val from: Double = 0.0,
+    override val to: Double = 1.0,
+    seed: Int = 0
+): IUniformDistribution {
     override fun getNextNumber() = rand.nextDouble(from, to)
 
-    override val length
-        get() = to - from
+    override val length = to - from
+
+    private val rand = Random(seed)
 }

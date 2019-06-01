@@ -8,6 +8,7 @@ import lab1.getDistChart
 import lab2.round
 import org.knowm.xchart.CategoryChart
 import org.knowm.xchart.SwingWrapper
+import org.knowm.xchart.internal.chartpart.Chart
 import kotlin.math.roundToInt
 
 fun main() {
@@ -22,7 +23,7 @@ fun main() {
     SwingWrapper(chartList).displayChartMatrix()
 }
 
-fun prepareChart(name: String, distrib: Distribution): CategoryChart {
+fun prepareChart(name: String, distrib: Distribution): Chart<*,*> {
     val getHistoPoint =
         { value: Double, step: Double -> ((value / step).toInt() * step).round(10) }
 

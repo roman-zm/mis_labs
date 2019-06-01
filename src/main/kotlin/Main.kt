@@ -51,7 +51,7 @@ fun main() {
 
 }
 
-fun getDistChart(valMap: MutableMap<Int, Int>): CategoryChart {
+fun getDistChart(valMap: Map<Int, Int>): CategoryChart {
     val chart = CategoryChartBuilder().title("Histogram").build()
     chart.styler.setHasAnnotations(true)
 

@@ -1,28 +1,28 @@
 package distribution
 
-import kotlin.math.max
 import kotlin.math.min
 
 class TrapezialDistribution(
-    private val l1: Double,
-    private val l2: Double,
+    l1: Double,
+    l2: Double,
     private val a: Double
-): SimpsonDistribution {
+): ISimpsonDistribution {
 
-    val firstStart = 0.0
-    val firstEnd = l1 * 2
+    override fun getNextNumber()
+            = a + firstUniformDistribution.getNextNumber() + secondUniformDistribution.getNextNumber()
 
-    val secondStart = 0.0
-    val secondEnd = l2 * 2
+    override val start by lazy {
+        a + min(firstUniformDistribution.from, secondUniformDistribution.from)
+    }
 
-    private val firstUniformDistribution: Distribution = SimpleCongruencesUniformDistribution(firstStart, firstEnd)
-    private val secondUniformDistribution: Distribution = SimpleCongruencesUniformDistribution(secondStart, secondEnd, 1520)
+    override val length by lazy {
+        firstUniformDistribution.to + secondUniformDistribution.to - start
+    }
 
-    override fun getNextNumber() =
-        a + firstUniformDistribution.getNextNumber() + secondUniformDistribution.getNextNumber()
+    private val firstUniformDistribution: IUniformDistribution
+            = SimpleCongruencesUniformDistribution(.0, l1 * 2)
 
-    override val start = max(firstStart, secondStart) + a
-
-    override val length: Double = firstEnd + secondEnd - max(firstStart, secondStart)
+    private val secondUniformDistribution: IUniformDistribution
+            = SimpleCongruencesUniformDistribution(.0, l2 * 2, 1520)
 
 }
